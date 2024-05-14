@@ -21,7 +21,8 @@ class Spider:
 
     def click_next_btn(self):
         try:
-            next_btn = self.driver.find_element(By.CSS_SELECTOR, "html body div.main div.page2 div.warp div.con div.pb_sys_common.pb_sys_normal.pb_sys_style1 span.p_pages span.p_next.p_fun a")
+            next_btn = self.driver.find_element(
+                By.CSS_SELECTOR, "html body div.main div.page2 div.warp div.con div.pb_sys_common.pb_sys_normal.pb_sys_style1 span.p_pages span.p_next.p_fun a")
             # 如果不可以点击，返回False
             if "javascript:void(0)" in next_btn.get_attribute("href"):
                 return False
@@ -32,6 +33,7 @@ class Spider:
         except Exception as e:
             self.logger.info(f"Error when clicking the next-page button: {e}")
             return False
+
     def get_result_from_soup(self):
         page = self.driver.page_source
         soup = BeautifulSoup(page, "html.parser")
@@ -40,16 +42,16 @@ class Spider:
         self.logger.info(f"Got {len(news_guster)} news-guster")
         for a in news_guster:  # a jsname="UWckNb"
             try:
-                url = a.find("a").get("href")
+                url = a.find("a").get("href") # type: ignore
                 # url: '../info/1012/12345.htm'
-                url = "https://ev.buaa.edu.cn" + url[2:]
-                title = a.find("a").attrs["title"]
+                url = "https://ev.buaa.edu.cn" + url[2:] # type: ignore
+                title = a.find("a").attrs["title"] # type: ignore
                 self.logger.info(f"Got one result:{url}, {title}")
                 yield [title, url]
             except Exception as e:
                 self.logger.warning(f"Error occured when parsing divs: {e}")
                 save_as_csv([self.driver.current_url],
-                            file_path=f"data/progress_of_{quote(self.question)}.csv")
+                            file_path=f"data/progress_of_{quote(self.question)}.csv") # type: ignore
 
     def catch_results(self):
         results = self.get_result_from_soup()
@@ -70,6 +72,7 @@ class Spider:
         self.logger.info("=====end to catch results in page=====")
         self.driver.quit()
         return self.results_set
+
 
 if __name__ == '__main__':
     Spider().run()
