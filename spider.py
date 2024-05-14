@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup  # 导入BeautifulSoup库，用于解析HTML内容
 from selenium.webdriver.common.by import By  # 导入By模块，用于定位页面元素
 from selenium.webdriver.support import expected_conditions as EC  # 导入期望条件模块
 from selenium.webdriver.support.ui import WebDriverWait  # 导入WebDriverWait模块，用于显式等待
-
 from tools import *  # 导入tools模块中的所有函数
 
 # 获取用户代理列表
@@ -13,8 +12,9 @@ UA_LIST = get_data(file_path="meta/user_agents.txt")
 # 北航新闻网页的URL
 BUAA_NEWS_WEB_URL = 'https://ev.buaa.edu.cn/News___Events/News.htm'
 
-
 # 定义一个爬虫类
+
+
 class Spider:
     def __init__(self):
         # 初始化Firefox浏览器驱动
@@ -101,6 +101,11 @@ class Spider:
         return self.results_set
 
 
+def main():
+    spider = Spider()
+    spider.run()
+
+
 # 程序的入口，运行爬虫
 if __name__ == '__main__':
-    Spider().run()
+    main()
